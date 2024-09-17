@@ -8,13 +8,17 @@ app.get('/', function (req, res) {
 })
 
 app.get('/personagem', function (req, res) {
-    res.send(lista)
+    res.send(lista.filter(Boolean))
 })
 
 app.get('/personagem/:id', function (req, res) {
     const id = req.params.id
     const item = lista[id - 1]
     
+    if (!item) {
+        return res.status(404).send("Pagina não existe")
+    }
+
     res.send(item)
 })
 
@@ -25,6 +29,14 @@ app.post('/personagem', function (req, res) {
 
     const novoItem = body.nome
     
+    if (!novoItem) {
+        return res.status(400).send("Corpo de requisição deve conter a propriedade `nome`")
+    }
+
+    if (lista.includes(novoItem)) {
+        return res.status(409).send('Esse item ja existe na lista.')
+    }
+
     lista.push(novoItem)
 
     res.send("Item adicionado com sucesso: " + novoItem)
