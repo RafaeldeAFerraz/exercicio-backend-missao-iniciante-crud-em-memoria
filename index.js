@@ -42,4 +42,16 @@ app.post('/personagem', function (req, res) {
     res.send("Item adicionado com sucesso: " + novoItem)
 })
 
+app.delete('/personagem/:id', function (req,res) {
+    const id = req.params.id
+
+    if (!lista[id - 1]) {
+        res.status(404).send('Item não encontrado')
+    }
+
+    delete lista[id - 1]
+
+    res.send("item removido com sucesso: " + id)
+})
+
 app.listen(3000)
