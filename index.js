@@ -42,6 +42,26 @@ app.post('/personagem', function (req, res) {
     res.send("Item adicionado com sucesso: " + novoItem)
 })
 
+app.put('/personagem/:id', function (req, res) {
+    const id = req.params.id
+
+    const body = req.body
+
+    const novoItem = body.nome
+
+    if (!novoItem) {
+        return res.status(400).send("Corpo de requisição deve conter a propriedade `nome`")
+    }
+
+    if (lista.includes(novoItem)) {
+        return res.status(409).send('Esse item ja existe na lista.')
+    }
+
+    lista[id - 1] = novoItem
+    
+    res.status(201).send('Item atualizado com sucesso: ' + id + '- ' + novoItem)
+})
+
 app.delete('/personagem/:id', function (req,res) {
     const id = req.params.id
 
